@@ -5,8 +5,6 @@ import {EditIcon} from '../icons/table/edit-icon';
 import {EyeIcon} from '../icons/table/eye-icon';
 import {IconButton, StyledBadge} from './table.styled';
 
-
-
 export const RenderCell = ({user, columnKey}: any) => {
    // @ts-ignore
    const cellValue = user[columnKey];
