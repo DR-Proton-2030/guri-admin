@@ -54,7 +54,7 @@ export const SidebarWrapper = () => {
                   </Tooltip>
                   <Tooltip content={'Profile'} rounded color="primary">
                      <Avatar
-                        src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                        src="https://imgs.search.brave.com/bFF8_xQy_-cBA55VIKAy68h8rgyZDOyvB5FXxL1xR5g/rs:fit:860:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzY1LzEwLzQ3/LzM2MF9GXzY1MTA0/NzE4X3gxN2E3Nnd6/V0tJbTNCbGhBNnV5/WVZrRHM5OTgyYzZx/LmpwZw"
                         size={'sm'}
                      />
                   </Tooltip>

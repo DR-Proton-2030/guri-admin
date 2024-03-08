@@ -94,12 +94,7 @@ export const NavbarWrapper = ({children}: Props) => {
                />
             </Navbar.Content>
             <Navbar.Content>
-               <Navbar.Content hideIn={'md'}>
-                  <Flex align={'center'} css={{gap: '$4'}}>
-                     <FeedbackIcon />
-                     <Text span>Feedback?</Text>
-                  </Flex>
-               </Navbar.Content>
+            
 
                <Navbar.Content>
                   <NotificationsDropdown />
@@ -108,14 +103,7 @@ export const NavbarWrapper = ({children}: Props) => {
                <Navbar.Content hideIn={'md'}>
                   <SupportIcon />
                </Navbar.Content>
-               <Navbar.Content>
-                  <Link
-                     href="https://github.com/"
-                     target={'_blank'}
-                  >
-                     <GithubIcon />
-                  </Link>
-               </Navbar.Content>
+             
                <Navbar.Content>
                   <UserDropdown />
                </Navbar.Content>

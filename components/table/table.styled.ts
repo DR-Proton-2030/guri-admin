@@ -33,7 +33,7 @@ export const StyledBadge = styled('span', {
    color: '$white',
    variants: {
       type: {
-         active: {
+         ACTIVE: {
             bg: '$successLight',
             color: '$successLightContrast',
          },

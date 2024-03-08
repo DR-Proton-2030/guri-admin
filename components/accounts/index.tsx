@@ -1,6 +1,7 @@
 import {Button, Input, Text} from '@nextui-org/react';
+import axios from 'axios';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Breadcrumbs, Crumb, CrumbLink} from '../breadcrumb/breadcrumb.styled';
 import {DotsIcon} from '../icons/accounts/dots-icon';
 import {ExportIcon} from '../icons/accounts/export-icon';
@@ -15,6 +16,22 @@ import {AddUser} from './add-user';
 import { SearchIcon } from './searchicon/SearchIcon';
 
 export const Accounts = () => {
+   const [businesses, setBusinesses] = useState([])
+
+   const getBusiness = async () => {
+      try {
+         const response = await axios.get('http://localhost:8989/api/v1/business/getBusiness');
+         console.log(response.data.result.businesses); // Logging the response data
+         setBusinesses(response.data.result.businesses)
+      } catch (error) {
+         console.error('Error fetching business data:', error);
+      }
+   }
+
+useEffect(() => {
+   getBusiness()
+}, [])
+
    return (
       <Flex
          css={{
@@ -39,7 +56,7 @@ export const Accounts = () => {
 
             <Crumb>
                <UsersIcon />
-               <CrumbLink href="#">Users</CrumbLink>
+               <CrumbLink href="#">Business</CrumbLink>
                <Text>/</Text>
             </Crumb>
             <Crumb>
@@ -47,66 +64,10 @@ export const Accounts = () => {
             </Crumb>
          </Breadcrumbs>
 
-         <Text h3>All Accounts</Text>
-         <Flex
-            css={{gap: '$8'}}
-            align={'center'}
-            justify={'between'}
-            wrap={'wrap'}
-         >
-            <Flex
-               css={{
-                  'gap': '$6',
-                  'flexWrap': 'wrap',
-                  '@sm': {flexWrap: 'nowrap'},
-               }}
-               align={'center'}
-            >
-                <div className="w-[340px] h-[240px] px-8 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-      <Input
-        label="Search"
-        radius="lg"
-        classNames={{
-          label: "text-black/50 dark:text-white/90",
-          input: [
-            "bg-transparent",
-            "text-black/90 dark:text-white/90",
-            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-          ],
-          innerWrapper: "bg-transparent",
-          inputWrapper: [
-            "shadow-xl",
-            "bg-default-200/50",
-            "dark:bg-default/60",
-            "backdrop-blur-xl",
-            "backdrop-saturate-200",
-            "hover:bg-default-200/70",
-            "dark:hover:bg-default/70",
-            "group-data-[focused=true]:bg-default-200/50",
-            "dark:group-data-[focused=true]:bg-default/60",
-            "!cursor-text",
-          ],
-        }}
-        placeholder="Type to search..."
-        startContent={
-          <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-        }
-      />
-    </div>
-               <SettingsIcon />
-               <TrashIcon />
-               <InfoIcon />
-               <DotsIcon />
-            </Flex>
-            <Flex direction={'row'} css={{gap: '$6'}} wrap={'wrap'}>
-               <AddUser />
-               <Button auto iconRight={<ExportIcon />}>
-                  Export to CSV
-               </Button>
-            </Flex>
-         </Flex>
+         <Text h3>All Posts</Text>
+         
 
-         <TableWrapper />
+         <TableWrapper  />
       </Flex>
    );
 };
