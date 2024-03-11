@@ -37,7 +37,7 @@ export const TableWrapper = () => {
   const getBusiness = async () => {
     try {
       setLoading(true); // Show loader
-      const result = await getFilteredBusinesses(status, page); // Pass page parameter
+      const result = await getFilteredBusinesses(status, page);
       setBusinesses(result);
     } catch (error) {
       console.error("Error fetching business data:", error);

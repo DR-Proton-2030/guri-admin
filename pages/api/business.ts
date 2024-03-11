@@ -8,8 +8,7 @@ export interface Business {
   actions: string[];
 }
 
-const API_BASE_URL =
-  "https://ghuri-business-server-ts.onrender.com/api/v1/business/";
+const API_BASE_URL = "http://localhost:8989/api/v1/business/";
 
 export const getFilteredBusinesses = async (status: string, page: number) => {
   try {
@@ -34,6 +33,18 @@ export const editBusiness = async (id: string, status: string) => {
         id,
         status,
       }
+    );
+    return response.data.result;
+  } catch (error) {
+    console.error("Error updating business status:", error);
+    throw error;
+  }
+};
+export const editBusinessDetails = async (id: any, payload: any) => {
+  try {
+    const response = await axios.patch<{ result: Business }>(
+      API_BASE_URL + `editBusinessDetailsById/${id}`,
+      payload
     );
     return response.data.result;
   } catch (error) {
