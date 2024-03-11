@@ -18,7 +18,7 @@ export const getFilteredBusinesses = async (status: string, page: number) => {
         params: { status, page },
       }
     );
-    return response.data.result; // Return both businesses and total count
+    return response.data.result;
   } catch (error) {
     console.error("Error fetching business data:", error);
     throw error;
