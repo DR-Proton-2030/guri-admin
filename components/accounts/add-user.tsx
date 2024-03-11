@@ -15,7 +15,7 @@ import { editBusinessDetails } from "../../pages/api/business";
 
 const EditBusinessDetails = ({ business_Details }: any) => {
   const [visible, setVisible] = useState(false);
-  const [editedFields, setEditedFields] = useState({}); // State to store edited fields
+  const [editedFields, setEditedFields] = useState<any>({}); // State to store edited fields
   const [loading, setLoading] = useState(false);
   console.log("----->", business_Details);
 
@@ -26,9 +26,9 @@ const EditBusinessDetails = ({ business_Details }: any) => {
     console.log("closed");
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setEditedFields((prevFields) => ({
+    setEditedFields((prevFields: any) => ({
       ...prevFields,
       [name]: value,
     }));

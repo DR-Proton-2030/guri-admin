@@ -8,7 +8,7 @@ export interface Business {
   actions: string[];
 }
 
-const API_BASE_URL = "http://localhost:8989/api/v1/business/";
+const API_BASE_URL = "http://13.201.7.191:8989/api/v1/business/";
 
 export const getFilteredBusinesses = async (status: string, page: number) => {
   try {
