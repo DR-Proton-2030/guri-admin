@@ -14,7 +14,7 @@ export const Accounts = () => {
   const getBusiness = async () => {
     try {
       const response = await axios.get(
-        "http://13.201.87.228:8989/api/v1/business/getBusiness"
+        "https://stingray-app-zclxo.ondigitalocean.app/api/v1/business/getBusiness"
       );
       console.log(response.data.result.businesses); // Logging the response data
       setBusinesses(response.data.result.businesses);
