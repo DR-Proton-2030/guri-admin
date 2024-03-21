@@ -1,6 +1,7 @@
 import {Dropdown, Text} from '@nextui-org/react';
 import React, {useState} from 'react';
-import {AcmeIcon} from '../icons/acme-icon';
+import { AcmeIcon } from '../icons/acme-icon';
+import logo from '../assets/WhatsApp Image 2024-03-21 at 08.43.39.jpeg'
 import {AcmeLogo} from '../icons/acmelogo';
 import {BottomIcon} from '../icons/sidebar/bottom-icon';
 import {Box} from '../styles/box';
@@ -10,13 +11,15 @@ interface Company {
    name: string;
    location: string;
    logo: React.ReactNode;
+   icon: Object;
 }
 
 export const CompaniesDropdown = () => {
    const [company, setCompany] = useState<Company>({
-      name: 'Acme Co.',
-      location: 'Palo Alto, CA',
+      name: 'Ghuri Gharangna.',
+      location: 'Punjab,India',
       logo: <AcmeIcon />,
+      icon: <img src={logo.toString()} alt="Logo" />
    });
    return (
       <Box className=''>
