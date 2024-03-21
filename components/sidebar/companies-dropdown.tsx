@@ -6,6 +6,7 @@ import {AcmeLogo} from '../icons/acmelogo';
 import {BottomIcon} from '../icons/sidebar/bottom-icon';
 import {Box} from '../styles/box';
 import {Flex} from '../styles/flex';
+import Image from 'next/image';
 
 interface Company {
    name: string;
@@ -18,7 +19,7 @@ export const CompaniesDropdown = () => {
    const [company, setCompany] = useState<Company>({
       name: 'Ghuri Gharangna.',
       location: 'Punjab,India',
-      logo: <AcmeIcon />,
+      logo: <Image src={logo} alt="" height={200} width={200}/>,
       icon: <img src={logo.toString()} alt="Logo" />
    });
    return (
