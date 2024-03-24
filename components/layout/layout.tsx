@@ -45,89 +45,89 @@ export const Layout = ({ children }: Props) => {
 
   return (
     <>
-      {loggedIn ? (
-        <SidebarContext.Provider
-          value={{
-            collapsed: sidebarOpen,
-            setCollapsed: handleToggleSidebar,
-          }}
-        >
-          <WrapperLayout>
-            <SidebarWrapper />
+      <SidebarContext.Provider
+        value={{
+          collapsed: sidebarOpen,
+          setCollapsed: handleToggleSidebar,
+        }}
+      >
+        <WrapperLayout>
+          <SidebarWrapper />
+          {loggedIn ? (
             <NavbarWrapper>{children}</NavbarWrapper>
-          </WrapperLayout>
-        </SidebarContext.Provider>
-      ) : null}
-      {!loggedIn && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#ffffff",
-              padding: "20px",
-              borderRadius: "8px",
-              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                authenticate();
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+                marginLeft: "40vh",
               }}
             >
-              <h2>Login</h2>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+              <div
                 style={{
-                  marginBottom: "10px",
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                }}
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={{
-                  marginBottom: "10px",
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                }}
-              />
-              <button
-                type="submit"
-                style={{
-                  backgroundColor: "#007bff",
-                  color: "#ffffff",
-                  padding: "10px 20px",
-                  borderRadius: "4px",
-                  border: "none",
-                  cursor: "pointer",
+                  backgroundColor: "#ffffff",
+                  padding: "20px",
+                  borderRadius: "8px",
+                  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
                 }}
               >
-                Login
-              </button>
-              {error && (
-                <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
-              )}
-            </form>
-          </div>
-        </div>
-      )}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    authenticate();
+                  }}
+                >
+                  <h2>Login</h2>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    style={{
+                      marginBottom: "10px",
+                      width: "100%",
+                      padding: "10px",
+                      borderRadius: "4px",
+                      border: "1px solid #ccc",
+                    }}
+                  />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{
+                      marginBottom: "10px",
+                      width: "100%",
+                      padding: "10px",
+                      borderRadius: "4px",
+                      border: "1px solid #ccc",
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      backgroundColor: "#007bff",
+                      color: "#ffffff",
+                      padding: "10px 20px",
+                      borderRadius: "4px",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Login
+                  </button>
+                  {error && (
+                    <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
+                  )}
+                </form>
+              </div>
+            </div>
+          )}
+        </WrapperLayout>
+      </SidebarContext.Provider>
     </>
   );
 };

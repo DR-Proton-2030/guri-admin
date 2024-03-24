@@ -1,9 +1,11 @@
 import type { NextPage } from "next";
 import { Accounts } from "../components/accounts";
 import Category from "../components/Category/Category";
+import React from "react";
 
-const Home: NextPage = () => {
-  return <Accounts />;
+const CategoryPage: NextPage = () => {
+  // return <Accounts />;
+  return <Category />;
 };
 
-export default Home;
+export default CategoryPage;
