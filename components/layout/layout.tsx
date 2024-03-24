@@ -20,14 +20,21 @@ export const Layout = ({ children }: Props) => {
   const [error, setError] = useState("");
 
   const authenticate = () => {
-    const hardCodedEmail = "admin@gmail.com";
-    const hardCodePassword = "admin@123";
-
-    if (email === hardCodedEmail && password === hardCodePassword) {
+    const user_email = localStorage.getItem("user_email");
+    if (user_email) {
       setLoggedIn(true);
-      router.push("/"); // Redirect to home page upon successful login
+      router.push("/");
     } else {
-      setError("Invalid email or password");
+      const hardCodedEmail = "admin@gmail.com";
+      const hardCodePassword = "admin@123";
+
+      if (email === hardCodedEmail && password === hardCodePassword) {
+        setLoggedIn(true);
+        router.push("/"); // Redirect to home page upon successful login
+        localStorage.setItem("use_email", email);
+      } else {
+        setError("Invalid email or password");
+      }
     }
   };
 
