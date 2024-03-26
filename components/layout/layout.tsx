@@ -45,89 +45,90 @@ export const Layout = ({ children }: Props) => {
 
   return (
     <>
-      <SidebarContext.Provider
-        value={{
-          collapsed: sidebarOpen,
-          setCollapsed: handleToggleSidebar,
-        }}
-      >
-        <WrapperLayout>
-          <SidebarWrapper />
-          {loggedIn ? (
+      {loggedIn ? (
+        <SidebarContext.Provider
+          value={{
+            collapsed: sidebarOpen,
+            setCollapsed: handleToggleSidebar,
+          }}
+        >
+          <WrapperLayout>
+            <SidebarWrapper />
+
             <NavbarWrapper>{children}</NavbarWrapper>
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh",
-                marginLeft: "40vh",
+          </WrapperLayout>
+        </SidebarContext.Provider>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            marginLeft: "0vh",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#ffffff",
+              padding: "20px",
+              borderRadius: "8px",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                authenticate();
               }}
             >
-              <div
+              <h2>Login</h2>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 style={{
-                  backgroundColor: "#ffffff",
-                  padding: "20px",
-                  borderRadius: "8px",
-                  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+                  marginBottom: "10px",
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                }}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{
+                  marginBottom: "10px",
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                }}
+              />
+              <button
+                type="submit"
+                style={{
+                  backgroundColor: "#007bff",
+                  color: "#ffffff",
+                  padding: "10px 20px",
+                  borderRadius: "4px",
+                  border: "none",
+                  cursor: "pointer",
                 }}
               >
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    authenticate();
-                  }}
-                >
-                  <h2>Login</h2>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={{
-                      marginBottom: "10px",
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                    }}
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={{
-                      marginBottom: "10px",
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                    }}
-                  />
-                  <button
-                    type="submit"
-                    style={{
-                      backgroundColor: "#007bff",
-                      color: "#ffffff",
-                      padding: "10px 20px",
-                      borderRadius: "4px",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Login
-                  </button>
-                  {error && (
-                    <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
-                  )}
-                </form>
-              </div>
-            </div>
-          )}
-        </WrapperLayout>
-      </SidebarContext.Provider>
+                Login
+              </button>
+              {error && (
+                <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
+              )}
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 };
