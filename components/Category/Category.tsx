@@ -7,6 +7,8 @@ import { HouseIcon } from "../icons/breadcrumb/house-icon";
 import { UsersIcon } from "../icons/breadcrumb/users-icon";
 import { Flex } from "../styles/flex";
 import { TableWrapper } from "../table/table";
+// @ts-ignore
+// eslint-disable-next-line
 import CreateCategory from "./createCategory/CreateCategory.tsx";
 import { getCategory, deleteCategory } from "../../pages/api/category";
 
@@ -35,11 +37,11 @@ const Category = () => {
     }
   };
 
-  const handleEditCategory = (item) => {
+  const handleEditCategory = (item: any) => {
     setEditedCategory({ category: item.category, is_active: item.is_active });
   };
 
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = (e: any) => {
     const { name, value } = e.target;
     setEditedCategory((prev) => ({ ...prev, [name]: value }));
   };
@@ -92,7 +94,7 @@ const Category = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {data.map((item: any) => (
             <tr key={item._id}>
               <td>{item.category}</td>
               <td>{item.is_active ? "Active" : "Inactive"}</td>

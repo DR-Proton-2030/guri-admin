@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Input, Text } from "@nextui-org/react";
 import axios from "axios";
+
 import { createCategory } from "../../../pages/api/category";
 
 const CreateCategory = ({ fetchData }: any) => {

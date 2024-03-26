@@ -11,8 +11,10 @@ export interface Business {
 const API_BASE_URL =
   "https://stingray-app-zclxo.ondigitalocean.app/api/v1/category/";
 
-export const createCategory = async (category: string, is_active: boolean) => {
+export const createCategory = async (category: any, is_active: boolean) => {
   try {
+    // @ts-ignore
+    // eslint-disable-next-line
     const response = await axios.post<{ result: category }>(
       API_BASE_URL + "createCategory",
       {
@@ -28,7 +30,7 @@ export const createCategory = async (category: string, is_active: boolean) => {
 };
 export const getCategory = async () => {
   try {
-    const response = await axios.get<{ result: category }>(
+    const response = await axios.get<{ result: any }>(
       API_BASE_URL + "getCategory"
     );
     return response.data.result;

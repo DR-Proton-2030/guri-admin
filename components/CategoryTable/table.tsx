@@ -34,9 +34,9 @@ export const TableWrapper = () => {
     try {
       setLoading(true); // Show loader
       const result: any = await axios.get(
-        "http://localhost:8989/api/v1/category/getCategory"
+        "https://stingray-app-zclxo.ondigitalocean.app/api/v1/category/getCategory"
       );
-      setBusinesses(response.data.result);
+      setBusinesses(result.data.result);
     } catch (error) {
       console.error("Error fetching business data:", error);
     } finally {
