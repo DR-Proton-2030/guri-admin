@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router"; // Import useRouter hook
 import { useLockedBody } from "../hooks/useBodyLock";
 import { NavbarWrapper } from "../navbar/navbar";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const Layout = ({ children }: Props) => {
-  const router = useRouter(); // Initialize useRouter hook
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [_, setLocked] = useLockedBody(false);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -19,22 +19,23 @@ export const Layout = ({ children }: Props) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const authenticate = () => {
+  useEffect(() => {
     const user_email = localStorage.getItem("user_email");
     if (user_email) {
       setLoggedIn(true);
-      router.push("/");
-    } else {
-      const hardCodedEmail = "admin@gmail.com";
-      const hardCodePassword = "admin@123";
+    }
+  }, []); // Empty dependency array to ensure this effect runs only once on component mount
 
-      if (email === hardCodedEmail && password === hardCodePassword) {
-        setLoggedIn(true);
-        router.push("/"); // Redirect to home page upon successful login
-        localStorage.setItem("use_email", email);
-      } else {
-        setError("Invalid email or password");
-      }
+  const authenticate = () => {
+    const hardCodedEmail = "admin@gmail.com";
+    const hardCodedPassword = "admin@123";
+
+    if (email === hardCodedEmail && password === hardCodedPassword) {
+      setLoggedIn(true);
+      router.push("/");
+      localStorage.setItem("user_email", email); // Store the email in localStorage
+    } else {
+      setError("Invalid email or password");
     }
   };
 
@@ -54,7 +55,6 @@ export const Layout = ({ children }: Props) => {
         >
           <WrapperLayout>
             <SidebarWrapper />
-
             <NavbarWrapper>{children}</NavbarWrapper>
           </WrapperLayout>
         </SidebarContext.Provider>

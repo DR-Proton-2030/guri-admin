@@ -7,7 +7,7 @@ export const UserDropdown = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("user_email");
 
     // Redirect to login page or any other appropriate page after logout
     router.push("/login");
@@ -54,9 +54,9 @@ export const UserDropdown = () => {
         <Dropdown.Item key="help_and_feedback" withDivider>
           Help & Feedback
         </Dropdown.Item>
-   <Dropdown.Item key="logout" withDivider color="error">
-  <button onClick={handleLogout}>Log Out</button>
-</Dropdown.Item>
+        <Dropdown.Item key="logout" withDivider color="error">
+          <button onClick={handleLogout}>Log Out</button>
+        </Dropdown.Item>
 
         <Dropdown.Item key="switch" withDivider>
           <DarkModeSwitch />
