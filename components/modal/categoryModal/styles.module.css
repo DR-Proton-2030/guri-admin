@@ -1,0 +1,125 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form input[type="text"],
+.form input[type="file"] {
+    width: 100%;
+    padding: 15px;
+    border-radius: 1rem;
+}
+
+.modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 30%;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.close {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.closeButton {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    text-align: right;
+    text-transform: capitalize;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.formGroup {
+    margin-bottom: 15px;
+}
+
+.formImage {
+    /* width: "30%"; */
+    width: 100%;
+    display: "flex";
+    flex-direction: "column";
+    gap: "20px";
+    align-items: "center";
+    justify-content: "center";
+    border: "1px solid black";
+    border-radius: "8px";
+    padding: "16px 8px";
+    background-color: "#fff";
+    aspect-ratio: "16/9";
+    cursor: "pointer";
+    position: "relative";
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.formControl {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.checkboxContainer label {
+    margin-right: 10px;
+}
+
+.checkboxContainer input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    width: 50%;
+    text-align: center;
+    align-self: center;
+}
+
+.btn:hover {
+    background-color: #0069d9;
+}
