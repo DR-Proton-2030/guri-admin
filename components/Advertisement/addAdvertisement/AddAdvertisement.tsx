@@ -71,7 +71,7 @@ const AddAdvertisement = ({ fetchData }: any) => {
   };
 
   const fileName = details.advertisement ? details.advertisement : "";
-  const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSave = async (e: any) => {
     // e.preventDefault();
     try {
       setLoading(true);
@@ -176,7 +176,7 @@ const AddAdvertisement = ({ fetchData }: any) => {
           <Button
             auto
             css={{ py: "$10", px: "$1", w: "$32" }}
-            onPress={() => handleSave}
+            onPress={handleSave}
             color="primary"
             disabled={!active}
           >
