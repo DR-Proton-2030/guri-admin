@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Text } from "@nextui-org/react";
 import axios from "axios";
 import Image from "next/image";
+import { Loader } from "../../table/loader/Loader";
 
 const dummyData = [
     {
@@ -31,9 +32,10 @@ const AddAdvertisement = ({ fetchData }: any) => {
         advertisement: "",
         is_active: true,
     });
-
     const [images, setImages] = useState<FileList | null>(null);
     const [prevAds, setPrevAds] = useState<string[] | null>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [active, setActive] = useState<boolean>(false);
 
     const handleChangeDetails = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -45,6 +47,7 @@ const AddAdvertisement = ({ fetchData }: any) => {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setImages(e.target.files);
+            setActive(true);
         }
     };
 
@@ -63,6 +66,7 @@ const AddAdvertisement = ({ fetchData }: any) => {
             }
             console.log(ads);
             setPrevAds(ads);
+            console.log(prevAds);
         } catch (error) {
             throw error;
         }
@@ -72,6 +76,7 @@ const AddAdvertisement = ({ fetchData }: any) => {
     const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
         // e.preventDefault();
         try {
+            setLoading(true);
             const formData = new FormData();
 
             formData.append("target_url", "dummy");
@@ -95,6 +100,13 @@ const AddAdvertisement = ({ fetchData }: any) => {
             return response.data.result;
         } catch (error) {
             throw error;
+        } finally {
+            setLoading(false);
+            setDetails({
+                advertisement: "",
+                is_active: true,
+            });
+            setImages(null);
         }
     };
 
@@ -113,116 +125,124 @@ const AddAdvertisement = ({ fetchData }: any) => {
                 gap: "10px",
             }}
         >
-            <div
-                style={{
-                    width: "30%",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    border: "1px solid black",
-                    borderRadius: "8px",
-                    padding: "16px 8px",
-                    backgroundColor: "#fff",
-                    aspectRatio: "16/9",
-                    cursor: "pointer",
-                    position: "relative",
-                }}
-            >
-                <label htmlFor="advertise">Upload Advertisement</label>
-                {images ? (
-                    <div style={{ width: "100%", height: "100%" }}>
-                        {/* <Image
-                            src={URL.createObjectURL(images)}
-                            alt="Selected Advertisement"
-                            layout="fill"
-                            style={{
-                                objectFit: "cover",
-                                borderRadius: "8px",
-                            }}
-                        /> */}
-                        <span style={{ textAlign: "center" }}>
-                            File Uploaded
-                        </span>
-                    </div>
-                ) : null}
-                <input
-                    type="file"
-                    name="advertise"
-                    id="advertise"
-                    accept="image/*"
-                    style={{
-                        position: "absolute",
-                        width: "100%",
-                        height: "100%",
-                        top: 0,
-                        left: 0,
-                        opacity: 0,
-                        cursor: "pointer",
-                    }}
-                    onChange={handleImageChange}
-                />
-            </div>
-            <span>{fileName}</span>
-            <Button
-                auto
-                css={{ py: "$10", px: "$1", w: "$32" }}
-                onPress={handleSave}
-            >
-                Upload
-            </Button>
-            <div style={{ width: "100%" }}>
-                <h4>Previously Uploaded</h4>
-                <div
-                    style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        width: "100%",
-                        gap: "0.8rem",
-                    }}
-                >
-                    {prevAds?.map((item, index) => {
-                        return (
-                            <div
-                                key={index}
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    width: "25%",
-                                    gap: "8px",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    border: "1px solid black",
-                                    borderRadius: "8px",
-                                    padding: "16px 8px",
-                                    backgroundColor: "#fff",
-                                    aspectRatio: "16/9",
-                                    cursor: "pointer",
-                                }}
-                            >
+            {loading ? (
+                <Loader />
+            ) : (
+                <>
+                    <div
+                        style={{
+                            width: "30%",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "20px",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            border: "1px solid black",
+                            borderRadius: "8px",
+                            padding: "16px 8px",
+                            backgroundColor: "#fff",
+                            aspectRatio: "16/9",
+                            cursor: "pointer",
+                            position: "relative",
+                        }}
+                    >
+                        {images ? (
+                            <div style={{ width: "100%", height: "100%" }}>
                                 <Image
-                                    src={URL.createObjectURL(new Blob([item]))}
-                                    alt="advertisement"
-                                    layout="responsive"
-                                    width={100}
-                                    height={100}
+                                    src={URL.createObjectURL(images[0])}
+                                    alt="Selected Advertisement"
+                                    layout="fill"
                                     style={{
                                         objectFit: "cover",
-                                        backgroundColor: "green",
-                                        aspectRatio: "16/9",
-                                    }}
-                                    onClick={(e) => {
-                                        const target =
-                                            e.target as HTMLInputElement;
-                                        setImages(target.files);
+                                        borderRadius: "8px",
                                     }}
                                 />
                             </div>
-                        );
-                    })}
-                </div>
-            </div>
+                        ) : (
+                            <label htmlFor="advertise">
+                                Upload Advertisement
+                            </label>
+                        )}
+                        <input
+                            type="file"
+                            name="advertise"
+                            id="advertise"
+                            accept="image/*"
+                            style={{
+                                position: "absolute",
+                                width: "100%",
+                                height: "100%",
+                                top: 0,
+                                left: 0,
+                                opacity: 0,
+                                cursor: "pointer",
+                            }}
+                            onChange={handleImageChange}
+                        />
+                    </div>
+                    <span>{fileName}</span>
+                    <Button
+                        auto
+                        css={{ py: "$10", px: "$1", w: "$32" }}
+                        onPress={handleSave}
+                        variant="contained"
+                        color="primary"
+                        disabled={!active}
+                    >
+                        Upload
+                    </Button>
+                    <div style={{ width: "100%" }}>
+                        <h4>Previously Uploaded</h4>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                width: "100%",
+                                gap: "0.8rem",
+                            }}
+                        >
+                            {prevAds?.map((item, index) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            width: "25%",
+                                            gap: "8px",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            border: "1px solid black",
+                                            borderRadius: "8px",
+                                            padding: "16px 8px",
+                                            backgroundColor: "#fff",
+                                            aspectRatio: "16/9",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={(e) => {}}
+                                    >
+                                        <div style={{ width: "100%" }}>
+                                            <Image
+                                                src={item}
+                                                alt="advertisement"
+                                                layout="responsive"
+                                                width={200}
+                                                height={110}
+                                                style={{
+                                                    objectFit: "cover",
+                                                    backgroundColor: "green",
+                                                    aspectRatio: "16/9",
+                                                    borderRadius: "8px",
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
