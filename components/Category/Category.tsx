@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Button, Input, Text } from "@nextui-org/react";
+import { Button, Input, Table, Text } from "@nextui-org/react";
 import axios from "axios";
 import Link from "next/link";
 import { Breadcrumbs, Crumb, CrumbLink } from "../breadcrumb/breadcrumb.styled";
 import { HouseIcon } from "../icons/breadcrumb/house-icon";
 import { UsersIcon } from "../icons/breadcrumb/users-icon";
 import { Flex } from "../styles/flex";
-import { TableWrapper } from "../table/table";
 // @ts-ignore
 // eslint-disable-next-line
 import CreateCategory from "./createCategory/CreateCategory.tsx";
-import { getCategory, deleteCategory } from "../../pages/api/category";
+import {
+    getCategory,
+    deleteCategory,
+    editCategory,
+} from "../../pages/api/category";
+import { Loader } from "../table/loader/Loader";
+import RenderCell from "./render-cell";
+import { useSearchContext } from "../navbar/SearchContext";
 
 const Category = () => {
     const [data, setData] = useState([]);
@@ -18,40 +24,83 @@ const Category = () => {
         category: "",
         is_active: false,
     });
+    const [loading, setLoading] = useState<boolean>(false);
+    const context = useSearchContext();
+
+    if (!context) {
+        return null;
+    }
+    const { search, setSearch } = context;
+
+    const API_BASE_URL =
+        "https://stingray-app-zclxo.ondigitalocean.app/api/v1/category/";
+
+    const columns = [
+        { name: "NAME", uid: "name" },
+        { name: "STATUS", uid: "status" },
+        { name: "ACTIONS", uid: "actions" },
+        { name: "DELETE", uid: "delete" },
+    ];
+
+    //  FUNCTION FOR THE SEARCHING OF CATEGORIES//
+    // const searchData = async () => {
+    //     try {
+    //         if (search.text) {
+    //             setLoading(true);
+    //             const response = await searchCategories("name", search.text);
+    //             setData(response);
+    //         } else {
+    //             setLoading(true);
+    //             const result = await getCategory();
+    //             setData(result);
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //         throw error;
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     const fetchData = async () => {
         try {
+            setLoading(true);
             const response = await getCategory();
             setData(response);
+            setLoading(false);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
 
-    const handledeleteCategory = async ({ _id }: any) => {
+    const handleStatusChange = async (_id: string, is_active: boolean) => {
         try {
-            const response = await deleteCategory(_id);
+            console.log(is_active);
+            const response = await editCategory(_id, is_active);
+            alert("Status has been changed");
             fetchData();
         } catch (error) {
             console.error("Error editing category:", error);
         }
     };
 
-    const handleEditCategory = (item: any) => {
-        setEditedCategory({
-            category: item.category,
-            is_active: item.is_active,
-        });
-    };
-
-    const handleCategoryChange = (e: any) => {
-        const { name, value } = e.target;
-        setEditedCategory((prev) => ({ ...prev, [name]: value }));
+    const handleDelete = async ({ _id }: any) => {
+        try {
+            const response = await deleteCategory(_id);
+            fetchData();
+        } catch (error) {
+            console.error("Error deleting category:", error);
+        }
     };
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    //FOR SEARCH FUNCTIONALITY//
+    // useEffect(() => {
+    //     searchData();
+    // }, [search.text]);
 
     return (
         <Flex
@@ -88,42 +137,68 @@ const Category = () => {
             <Text h3>All Categories</Text>
 
             <CreateCategory fetchData={fetchData} />
-            <table className="styled-table">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Active Status</th>
-                        <th>Edit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item: any) => (
-                        <tr key={item._id}>
-                            <td>{item.category}</td>
-                            <td>{item.is_active ? "Active" : "Inactive"}</td>
-                            <td>
-                                <button
-                                    className="edit-button"
-                                    onClick={() =>
-                                        handledeleteCategory({ _id: item._id })
-                                    }
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        fill="currentColor"
-                                        viewBox="0 0 16 16"
+
+            <>
+                {loading ? (
+                    <Loader />
+                ) : (
+                    <>
+                        <Table
+                            aria-label="Example table with custom cells"
+                            css={{
+                                height: "auto",
+                                minWidth: "100%",
+                                boxShadow: "none",
+                                width: "100%",
+                                px: 0,
+                            }}
+                            // selectionMode="multiple"
+                        >
+                            <Table.Header columns={columns}>
+                                {(column: any) => (
+                                    <Table.Column
+                                        key={column.uid}
+                                        align={
+                                            column.uid === "actions"
+                                                ? "center"
+                                                : "start"
+                                        }
                                     >
-                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                                    </svg>
-                                </button>{" "}
-                                {/* Edit Icon or Button */}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                                        {column.name}
+                                    </Table.Column>
+                                )}
+                            </Table.Header>
+                            <Table.Body items={data}>
+                                {(item: any) => (
+                                    <Table.Row key={item._id}>
+                                        {(columnKey: any) => (
+                                            <Table.Cell
+                                                key={columnKey}
+                                                css={{
+                                                    zIndex: 0,
+                                                }}
+                                            >
+                                                <RenderCell
+                                                    user={item}
+                                                    columnKey={columnKey}
+                                                    handleStatusChange={
+                                                        handleStatusChange
+                                                    }
+                                                    handleDelete={() =>
+                                                        handleDelete({
+                                                            _id: item._id,
+                                                        })
+                                                    }
+                                                />
+                                            </Table.Cell>
+                                        )}
+                                    </Table.Row>
+                                )}
+                            </Table.Body>
+                        </Table>
+                    </>
+                )}
+            </>
         </Flex>
     );
 };

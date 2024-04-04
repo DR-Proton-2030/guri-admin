@@ -1,139 +1,161 @@
-import {Input, Link, Navbar, Text} from '@nextui-org/react';
-import React from 'react';
-import {FeedbackIcon} from '../icons/navbar/feedback-icon';
-import {GithubIcon} from '../icons/navbar/github-icon';
-import {SupportIcon} from '../icons/navbar/support-icon';
-import {SearchIcon} from '../icons/searchicon';
-import {Box} from '../styles/box';
-import {Flex} from '../styles/flex';
-import {BurguerButton} from './burguer-button';
-import {NotificationsDropdown} from './notifications-dropdown';
-import {UserDropdown} from './user-dropdown';
+import { FormElement, Input, Link, Navbar } from "@nextui-org/react";
+
+import React from "react";
+import { FeedbackIcon } from "../icons/navbar/feedback-icon";
+import { GithubIcon } from "../icons/navbar/github-icon";
+import { SupportIcon } from "../icons/navbar/support-icon";
+import { SearchIcon } from "../icons/searchicon";
+import { Box } from "../styles/box";
+import { BurguerButton } from "./burguer-button";
+import { NotificationsDropdown } from "./notifications-dropdown";
+import { UserDropdown } from "./user-dropdown";
+import { useSearchContext } from "./SearchContext";
 
 interface Props {
-   children: React.ReactNode;
+    children: React.ReactNode;
 }
 
-export const NavbarWrapper = ({children}: Props) => {
-   const collapseItems = [
-      'Profile',
-      'Dashboard',
-      'Activity',
-      'Analytics',
-      'System',
-      'Deployments',
-      'My Settings',
-      'Team Settings',
-      'Help & Feedback',
-      'Log Out',
-   ];
-   return (
-      <Box
-         css={{
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            flex: '1 1 auto',
-            overflowY: 'auto',
-            overflowX: 'hidden',
-         }}
-      >
-         <Navbar
-            isBordered
+export const NavbarWrapper = ({ children }: Props) => {
+    const context = useSearchContext();
+
+    if (!context) {
+        return null;
+    }
+    const { search, setSearch } = context;
+
+    const handleSearchChange = (e: React.ChangeEvent<FormElement>) => {
+        setSearch((prevSearch: any) => ({
+            ...prevSearch,
+            text: e.target.value,
+        }));
+    };
+
+    const fields = ["name", "location", "phone_no"];
+
+    const collapseItems = [
+        "Profile",
+        "Dashboard",
+        "Activity",
+        "Analytics",
+        "System",
+        "Deployments",
+        "My Settings",
+        "Team Settings",
+        "Help & Feedback",
+        "Log Out",
+    ];
+    return (
+        <Box
             css={{
-               'borderBottom': '1px solid $border',
-               'justifyContent': 'space-between',
-               'width': '100%',
-               '@md': {
-                  justifyContent: 'space-between',
-               },
-
-               '& .nextui-navbar-container': {
-                  'border': 'none',
-                  'maxWidth': '100%',
-
-                  'gap': '$6',
-                  '@md': {
-                     justifyContent: 'space-between',
-                  },
-               },
+                position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                flex: "1 1 auto",
+                overflowY: "auto",
+                overflowX: "hidden",
             }}
-         >
-            <Navbar.Content showIn="md">
-               <BurguerButton />
-            </Navbar.Content>
-            <Navbar.Content
-               hideIn={'md'}
-               css={{
-                  width: '100%',
-               }}
+        >
+            <Navbar
+                // isBordered
+                css={{
+                    borderBottom: "1px solid $border",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    "@md": {
+                        justifyContent: "space-between",
+                    },
+
+                    "& .nextui-navbar-container": {
+                        border: "none",
+                        maxWidth: "100%",
+
+                        gap: "$6",
+                        "@md": {
+                            justifyContent: "space-between",
+                        },
+                    },
+                }}
             >
-               <Input
-                  clearable
-                  contentLeft={
-                     <SearchIcon
-                        fill="var(--nextui-colors-accents6)"
-                        size={16}
-                     />
-                  }
-                  contentLeftStyling={false}
-                  css={{
-                     'w': '100%',
-                     'transition': 'all 0.2s ease',
-                     '@xsMax': {
-                        w: '100%',
-                        // mw: '300px',
-                     },
-                     '& .nextui-input-content--left': {
-                        h: '100%',
-                        ml: '$4',
-                        dflex: 'center',
-                     },
-                  }}
-                  placeholder="Search..."
-               />
-            </Navbar.Content>
-            <Navbar.Content>
-            
+                <Navbar.Content showIn="md">
+                    <BurguerButton />
+                </Navbar.Content>
+                <Navbar.Content
+                    hideIn={"md"}
+                    css={{
+                        width: "100%",
+                    }}
+                >
+                    <Input
+                        clearable
+                        // contentRight={
 
-               <Navbar.Content>
-                  <NotificationsDropdown />
-               </Navbar.Content>
-
-               <Navbar.Content hideIn={'md'}>
-                  <SupportIcon />
-               </Navbar.Content>
-             
-               <Navbar.Content>
-                  <UserDropdown />
-               </Navbar.Content>
-            </Navbar.Content>
-
-            <Navbar.Collapse>
-               {collapseItems.map((item, index) => (
-                  <Navbar.CollapseItem
-                     key={item}
-                     activeColor="secondary"
-                     css={{
-                        color:
-                           index === collapseItems.length - 1 ? '$error' : '',
-                     }}
-                     isActive={index === 2}
-                  >
-                     <Link
-                        color="inherit"
+                        // }
+                        contentLeft={
+                            <SearchIcon
+                                fill="var(--nextui-colors-accents6)"
+                                size={16}
+                            />
+                        }
+                        value={search.text}
+                        onChange={handleSearchChange}
+                        contentLeftStyling={false}
                         css={{
-                           minWidth: '100%',
+                            w: "100%",
+                            transition: "all 0.2s ease",
+                            "@xsMax": {
+                                w: "100%",
+                                // mw: '300px',
+                            },
+                            "& .nextui-input-content--left": {
+                                h: "100%",
+                                ml: "$4",
+                                dflex: "center",
+                            },
                         }}
-                        href="#"
-                     >
-                        {item}
-                     </Link>
-                  </Navbar.CollapseItem>
-               ))}
-            </Navbar.Collapse>
-         </Navbar>
-         {children}
-      </Box>
-   );
+                        placeholder="Search..."
+                    />
+                </Navbar.Content>
+                <Navbar.Content>
+                    <Navbar.Content>
+                        <NotificationsDropdown />
+                    </Navbar.Content>
+
+                    <Navbar.Content hideIn={"md"}>
+                        <SupportIcon />
+                    </Navbar.Content>
+
+                    <Navbar.Content>
+                        <UserDropdown />
+                    </Navbar.Content>
+                </Navbar.Content>
+
+                <Navbar.Collapse>
+                    {collapseItems.map((item, index) => (
+                        <Navbar.CollapseItem
+                            key={item}
+                            activeColor="secondary"
+                            css={{
+                                color:
+                                    index === collapseItems.length - 1
+                                        ? "$error"
+                                        : "",
+                            }}
+                            isActive={index === 2}
+                        >
+                            <Link
+                                color="inherit"
+                                css={{
+                                    minWidth: "100%",
+                                }}
+                                href="#"
+                            >
+                                {item}
+                            </Link>
+                        </Navbar.CollapseItem>
+                    ))}
+                </Navbar.Collapse>
+            </Navbar>
+            {children}
+        </Box>
+    );
 };

@@ -40,6 +40,17 @@ export const getCategory = async () => {
     }
 };
 
+export const editCategory = async (_id: string, is_active: boolean) => {
+    try {
+        await axios.patch(API_BASE_URL + "editCategory/" + `${_id}`, {
+            is_active,
+        });
+    } catch (error) {
+        console.error("Error edit Category:", error);
+        throw error;
+    }
+};
+
 export const deleteCategory = async (_id: string) => {
     try {
         await axios.delete(API_BASE_URL + "deleteCategory/" + `${_id}`);

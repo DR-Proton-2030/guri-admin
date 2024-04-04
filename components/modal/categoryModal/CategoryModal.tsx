@@ -3,12 +3,13 @@ import styles from "./styles.module.css";
 import { Upload } from "../../assets";
 import Image from "next/image";
 import axios from "axios";
-import { Container } from "@nextui-org/react";
 import { Loader } from "../../table/loader/Loader";
 
 interface ICategoryModalProps {
     show: boolean;
     onClose: () => void;
+    type: string;
+    id?: string;
 }
 
 interface ICategoryProps {
@@ -16,7 +17,12 @@ interface ICategoryProps {
     is_active: boolean;
 }
 
-const CategoryModal: React.FC<ICategoryModalProps> = ({ show, onClose }) => {
+const CategoryModal: React.FC<ICategoryModalProps> = ({
+    show,
+    onClose,
+    type,
+    id,
+}) => {
     const [details, setDetails] = useState<ICategoryProps>({
         category: "",
         is_active: true,
@@ -78,6 +84,43 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({ show, onClose }) => {
         }
     };
 
+    const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            const formData = new FormData();
+
+            formData.append("category", details.category);
+            formData.append("is_active", String(details.is_active));
+            if (images) {
+                for (let i = 0; i < images.length; i++) {
+                    formData.append("images", images[i]);
+                }
+            }
+
+            const response = await axios.patch(
+                API_BASE_URL + "editCategory/" + `${id}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            onClose();
+            return response.data.result;
+        } catch (error) {
+            throw error;
+        } finally {
+            setLoading(false);
+            setDetails({
+                category: "",
+                is_active: true,
+            });
+            setImages(null);
+        }
+    };
+
     const handleClose = () => {
         onClose();
     };
@@ -101,7 +144,11 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({ show, onClose }) => {
                         ) : (
                             <>
                                 <form
-                                    onSubmit={handleSave}
+                                    onSubmit={
+                                        type === "submit"
+                                            ? handleSave
+                                            : handleEdit
+                                    }
                                     id="bookNowForm"
                                     className={styles.form}
                                 >
@@ -117,6 +164,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({ show, onClose }) => {
                                             required
                                         />
                                     </div>
+
                                     <div className={styles.checkboxContainer}>
                                         <label htmlFor="title">Is Active</label>
                                         <input
@@ -129,6 +177,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({ show, onClose }) => {
                                             required
                                         />
                                     </div>
+
                                     <div className={styles.formGroup}>
                                         <label htmlFor="category">
                                             Upload Category Image
@@ -200,15 +249,27 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({ show, onClose }) => {
                                             />
                                         </div>
                                     </div>
-                                    <button
-                                        type="submit"
-                                        className={[
-                                            styles.btn,
-                                            styles.btnPrimary,
-                                        ].join(" ")}
-                                    >
-                                        Submit
-                                    </button>
+                                    {type === "submit" ? (
+                                        <button
+                                            type="submit"
+                                            className={[
+                                                styles.btn,
+                                                styles.btnPrimary,
+                                            ].join(" ")}
+                                        >
+                                            Submit
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="submit"
+                                            className={[
+                                                styles.btn,
+                                                styles.btnPrimary,
+                                            ].join(" ")}
+                                        >
+                                            Edit
+                                        </button>
+                                    )}
                                 </form>
                             </>
                         )}
