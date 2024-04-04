@@ -10,6 +10,8 @@ interface RenderCellProps {
     columnKey: any;
     handleStatusChange: (id: string, newStatus: string) => void;
     handleDelete: (id: string) => void;
+    showModal: boolean;
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RenderCell: React.FC<RenderCellProps> = ({
@@ -17,9 +19,10 @@ const RenderCell: React.FC<RenderCellProps> = ({
     columnKey,
     handleStatusChange,
     handleDelete,
+    showModal,
+    setShowModal,
 }) => {
     const cellValue = user[columnKey];
-    const [showModal, setShowModal] = useState(false);
     const handleOpenModal = () => {
         setShowModal(true);
     };
@@ -87,12 +90,6 @@ const RenderCell: React.FC<RenderCellProps> = ({
                             </IconButton>
                         </Tooltip>
                     </Row>
-                    <CategoryModal
-                        show={showModal}
-                        onClose={() => setShowModal(false)}
-                        type="edit"
-                        id={user._id}
-                    />
                 </>
             );
         case "delete":

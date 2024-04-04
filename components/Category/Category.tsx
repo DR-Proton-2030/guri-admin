@@ -17,6 +17,7 @@ import {
 import { Loader } from "../table/loader/Loader";
 import RenderCell from "./render-cell";
 import { useSearchContext } from "../navbar/SearchContext";
+import CategoryModal from "../modal/categoryModal/CategoryModal";
 
 const Category = () => {
     const [data, setData] = useState([]);
@@ -26,6 +27,8 @@ const Category = () => {
     });
     const [loading, setLoading] = useState<boolean>(false);
     const context = useSearchContext();
+    const [editId, setEditId] = useState<string>("");
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     if (!context) {
         return null;
@@ -171,27 +174,34 @@ const Category = () => {
                             <Table.Body items={data}>
                                 {(item: any) => (
                                     <Table.Row key={item._id}>
-                                        {(columnKey: any) => (
-                                            <Table.Cell
-                                                key={columnKey}
-                                                css={{
-                                                    zIndex: 0,
-                                                }}
-                                            >
-                                                <RenderCell
-                                                    user={item}
-                                                    columnKey={columnKey}
-                                                    handleStatusChange={
-                                                        handleStatusChange
-                                                    }
-                                                    handleDelete={() =>
-                                                        handleDelete({
-                                                            _id: item._id,
-                                                        })
-                                                    }
-                                                />
-                                            </Table.Cell>
-                                        )}
+                                        {(columnKey: any) => {
+                                            setEditId(item._id);
+                                            return (
+                                                <Table.Cell
+                                                    key={columnKey}
+                                                    css={{
+                                                        zIndex: 0,
+                                                    }}
+                                                >
+                                                    <RenderCell
+                                                        user={item}
+                                                        columnKey={columnKey}
+                                                        handleStatusChange={
+                                                            handleStatusChange
+                                                        }
+                                                        handleDelete={() =>
+                                                            handleDelete({
+                                                                _id: item._id,
+                                                            })
+                                                        }
+                                                        showModal={showModal}
+                                                        setShowModal={
+                                                            setShowModal
+                                                        }
+                                                    />
+                                                </Table.Cell>
+                                            );
+                                        }}
                                     </Table.Row>
                                 )}
                             </Table.Body>
@@ -199,6 +209,12 @@ const Category = () => {
                     </>
                 )}
             </>
+            <CategoryModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                type="edit"
+                id={editId}
+            />
         </Flex>
     );
 };

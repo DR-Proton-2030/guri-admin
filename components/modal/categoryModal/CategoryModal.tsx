@@ -34,8 +34,14 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
     const handleChangeDetails = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const { name, value } = event.target;
-        setDetails(Object.assign({}, details, { [name]: value }));
+        const { name, value, type, checked } = event.target;
+
+        const newValue = type === "checkbox" ? checked : value;
+
+        setDetails((prevDetails) => ({
+            ...prevDetails,
+            [name]: newValue,
+        }));
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +77,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
             );
             console.log(response.data.result);
             onClose();
+
             return response.data.result;
         } catch (error) {
             throw error;
@@ -174,7 +181,6 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                                             className={styles.check}
                                             checked={details.is_active}
                                             onChange={handleChangeDetails}
-                                            required
                                         />
                                     </div>
 
