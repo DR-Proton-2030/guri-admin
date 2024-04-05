@@ -24,10 +24,12 @@ export const NavbarWrapper = ({ children }: Props) => {
     const { search, setSearch } = context;
 
     const handleSearchChange = (e: React.ChangeEvent<FormElement>) => {
-        setSearch((prevSearch: any) => ({
-            ...prevSearch,
-            text: e.target.value,
-        }));
+        if(setSearch){
+            setSearch((prevSearch: any) => ({
+                ...prevSearch,
+                text: e.target.value,
+            }));
+        }
     };
 
     const fields = ["name", "location", "phone_no"];
@@ -96,7 +98,7 @@ export const NavbarWrapper = ({ children }: Props) => {
                                 size={16}
                             />
                         }
-                        value={search.text}
+                        value={search?.text}
                         onChange={handleSearchChange}
                         contentLeftStyling={false}
                         css={{

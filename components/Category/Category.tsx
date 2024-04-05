@@ -29,10 +29,6 @@ const Category = () => {
     const context = useSearchContext();
     const [editId, setEditId] = useState<string>("");
     const [showModal, setShowModal] = useState<boolean>(false);
-
-    if (!context) {
-        return null;
-    }
     const { search, setSearch } = context;
 
     const API_BASE_URL =

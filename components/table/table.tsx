@@ -1,5 +1,5 @@
 import { Table } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box } from "../styles/box";
 import RenderCell from "./render-cell";
 import {
@@ -26,12 +26,7 @@ export const TableWrapper = () => {
     const [totalpage, setTotalPage] = useState<number>(1);
     const [page, setPage] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(true);
-    const context = useSearchContext();
-
-    if (!context) {
-        return null;
-    }
-    const { search, setSearch } = context;
+    const { search } = useSearchContext();
 
     const columns = [
         { name: "NAME", uid: "name" },
@@ -41,7 +36,7 @@ export const TableWrapper = () => {
         { name: "ACTIONS", uid: "actions" },
     ];
 
-    const getBusiness = async () => {
+    const getBusiness = useCallback( async () => {
         try {
             setLoading(true); // Show loader
             const result = await getFilteredBusinesses(status, page);
@@ -51,11 +46,11 @@ export const TableWrapper = () => {
         } finally {
             setLoading(false); // Hide loader regardless of success or error
         }
-    };
+    },[page, status]);
 
-    const searchData = async () => {
+    const searchData = useCallback( async () => {
         try {
-            if (search.text) {
+            if (search?.text) {
                 setLoading(true);
                 const response = await searchBusinesses("name", search.text);
                 // status === "PENDING" ?
@@ -71,13 +66,8 @@ export const TableWrapper = () => {
         } finally {
             setLoading(false);
         }
-    };
+    },[page, search?.text, status]);
 
-    const toggleStatus = () => {
-        setStatus((prevStatus) =>
-            prevStatus === "PENDING" ? "ACTIVE" : "PENDING"
-        );
-    };
     const handleStatusChange = async (id: string, newStatus: string) => {
         try {
             setLoading(true); // Show loader
@@ -131,11 +121,11 @@ export const TableWrapper = () => {
 
     useEffect(() => {
         getBusiness();
-    }, [status, page]);
+    }, [getBusiness]);
 
     useEffect(() => {
         searchData();
-    }, [search.text]);
+    }, [searchData]);
 
     return (
         <Box

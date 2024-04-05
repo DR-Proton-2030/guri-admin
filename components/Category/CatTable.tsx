@@ -6,10 +6,10 @@ import { Loader } from "../table/loader/Loader";
 import { deleteCategory } from "../../pages/api/category";
 
 export const CatTable = () => {
-    const [businesses, setBusinesses] = useState([]);
+    const [businesses, setBusinesses] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const columns = [
+    const columns: any[] = [
         { name: "Category", uid: "category" },
         { name: "Active Status", uid: "is_active" },
         { name: "Edit Status", uid: "edit_status" },
@@ -69,15 +69,15 @@ export const CatTable = () => {
                 <Loader />
             ) : (
                 <Table>
-                    <Table.Head>
+                    <Table.Header>
                         {columns.map((column) => (
                             <Table.Header key={column.uid}>
                                 {column.name}
                             </Table.Header>
                         ))}
-                    </Table.Head>
+                    </Table.Header>
                     <Table.Body>
-                        {businesses.map((business) => (
+                        {businesses.map((business:any) => (
                             <Table.Row key={business._id}>
                                 <Table.Cell>{business.category}</Table.Cell>
                                 <Table.Cell>{business.is_active}</Table.Cell>

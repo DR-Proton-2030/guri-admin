@@ -6,6 +6,7 @@ import { AcmeLogo } from "../icons/acmelogo";
 import { BottomIcon } from "../icons/sidebar/bottom-icon";
 import { Box } from "../styles/box";
 import { Flex } from "../styles/flex";
+import Image from "next/image";
 // import Image from 'next/image';
 
 interface Company {
@@ -20,7 +21,7 @@ export const CompaniesDropdown = () => {
     name: "Ghuri Gharangna.",
     location: "Punjab,India",
     logo: "",
-    icon: <img src={logo.toString()} alt="Logo" />,
+    icon: <Image src={logo.toString()} alt="Logo" />,
   });
   return (
     <Box className="">

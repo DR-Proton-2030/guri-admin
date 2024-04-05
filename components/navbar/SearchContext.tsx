@@ -5,10 +5,10 @@ interface ISearch {
     text: string;
 }
 interface ISearchContext {
-    search: ISearch;
-    setSearch: React.Dispatch<React.SetStateAction<ISearch>>;
+    search: ISearch | null;
+    setSearch: React.Dispatch<React.SetStateAction<ISearch>> | null;
 }
-const SearchContext = createContext<ISearchContext | undefined>(undefined);
+const SearchContext = createContext<ISearchContext>({search: null, setSearch: null});
 
 export const useSearchContext = () => useContext(SearchContext);
 

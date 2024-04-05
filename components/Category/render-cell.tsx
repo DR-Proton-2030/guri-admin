@@ -8,7 +8,7 @@ import CategoryModal from "../modal/categoryModal/CategoryModal";
 interface RenderCellProps {
     user: any;
     columnKey: any;
-    handleStatusChange: (id: string, newStatus: string) => void;
+    handleStatusChange: (_id: string, is_active: boolean) => Promise<void>;
     handleDelete: (id: string) => void;
     showModal: boolean;
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,7 +51,6 @@ const RenderCell: React.FC<RenderCellProps> = ({
             return (
                 <>
                     <Row
-                        display="flex"
                         justify="center"
                         align="center"
                         css={{
@@ -72,7 +71,7 @@ const RenderCell: React.FC<RenderCellProps> = ({
                             <IconButton
                                 css={{ color: "Green" }}
                                 onClick={() =>
-                                    handleStatusChange(user._id, "true")
+                                    handleStatusChange(user._id, true)
                                 }
                             >
                                 Activate
@@ -83,7 +82,7 @@ const RenderCell: React.FC<RenderCellProps> = ({
                             <IconButton
                                 css={{ color: "Red" }}
                                 onClick={() =>
-                                    handleStatusChange(user._id, "false")
+                                    handleStatusChange(user._id, false)
                                 }
                             >
                                 Deactivate
