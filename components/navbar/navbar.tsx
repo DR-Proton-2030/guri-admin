@@ -24,7 +24,7 @@ export const NavbarWrapper = ({ children }: Props) => {
     const { search, setSearch } = context;
 
     const handleSearchChange = (e: React.ChangeEvent<FormElement>) => {
-        if(setSearch){
+        if (setSearch) {
             setSearch((prevSearch: any) => ({
                 ...prevSearch,
                 text: e.target.value,

@@ -171,7 +171,6 @@ const Category = () => {
                                 {(item: any) => (
                                     <Table.Row key={item._id}>
                                         {(columnKey: any) => {
-                                            setEditId(item._id);
                                             return (
                                                 <Table.Cell
                                                     key={columnKey}
@@ -190,6 +189,7 @@ const Category = () => {
                                                                 _id: item._id,
                                                             })
                                                         }
+                                                        setId={setEditId}
                                                         showModal={showModal}
                                                         setShowModal={
                                                             setShowModal

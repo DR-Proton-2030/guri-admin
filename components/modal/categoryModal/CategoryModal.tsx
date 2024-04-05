@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
-import { Upload } from "../../assets";
+import Upload from "../../icons/cloud_upload_black_24dp.svg";
 import Image from "next/image";
 import axios from "axios";
 import { Loader } from "../../table/loader/Loader";

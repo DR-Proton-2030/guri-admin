@@ -12,6 +12,7 @@ interface RenderCellProps {
     handleDelete: (id: string) => void;
     showModal: boolean;
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const RenderCell: React.FC<RenderCellProps> = ({
@@ -21,10 +22,12 @@ const RenderCell: React.FC<RenderCellProps> = ({
     handleDelete,
     showModal,
     setShowModal,
+    setId,
 }) => {
     const cellValue = user[columnKey];
     const handleOpenModal = () => {
         setShowModal(true);
+        setId(user._id);
     };
 
     switch (columnKey) {

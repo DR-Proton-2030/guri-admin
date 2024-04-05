@@ -3,6 +3,7 @@ import { Button, Text } from "@nextui-org/react";
 import axios, { CancelTokenSource } from "axios";
 import Image from "next/image";
 import { Loader } from "../../table/loader/Loader";
+import Delete from "../../icons/delete_black_24dp.svg";
 
 const dummyData = [
     {
@@ -36,6 +37,7 @@ const AddAdvertisement = ({ fetchData }: any) => {
     const [images, setImages] = useState<FileList | null>(null);
     const [prevAds, setPrevAds] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [adLoading, setAdLoading] = useState<boolean>(false);
     const [active, setActive] = useState<boolean>(false);
     const [request, setRequest] = useState<CancelTokenSource | null>(null);
     const [updatedItems, setUpdatedItems] = useState<any>(null);
@@ -60,6 +62,7 @@ const AddAdvertisement = ({ fetchData }: any) => {
     const fetchPrevAds = async () => {
         //function to get the previous adds to display them
         try {
+            setAdLoading(true);
             const response = await axios.get<{ result: any }>(
                 API_BASE_URL + "getAdds"
             );
@@ -72,6 +75,8 @@ const AddAdvertisement = ({ fetchData }: any) => {
             setUpdatedItems(ads);
         } catch (error) {
             throw error;
+        } finally {
+            setAdLoading(false);
         }
     };
 
@@ -288,70 +293,103 @@ const AddAdvertisement = ({ fetchData }: any) => {
                                 flexWrap: "wrap",
                                 width: "100%",
                                 gap: "0.8rem",
+                                justifyContent: adLoading ? "center" : "start",
+                                alignItems: "center",
                             }}
                         >
-                            {updatedItems?.map((item: any, index: number) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        style={{
-                                            position: "relative",
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            width: "25%",
-                                            gap: "8px",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            borderRadius: "8px",
-                                            padding: "16px 8px",
-                                            backgroundColor: "#fff",
-                                            aspectRatio: "16/9",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        <div
-                                            style={{
-                                                width: "100%",
-                                                position: "relative",
-                                            }}
-                                        >
-                                            <Image
-                                                src={item.photo[0]}
-                                                alt="advertisement"
-                                                layout="responsive"
-                                                width={200}
-                                                height={110}
-                                                style={{
-                                                    objectFit: "cover",
-                                                    backgroundColor: "green",
-                                                    aspectRatio: "16/9",
-                                                    borderRadius: "8px",
-                                                }}
-                                            />
-                                            <button
-                                                style={{
-                                                    position: "absolute",
-                                                    top: "8px",
-                                                    right: "8px",
-                                                    background: "transparent",
-                                                    border: "none",
-                                                    color: "red",
-                                                    cursor: "pointer",
-                                                    padding: "4px",
-                                                    borderRadius: "50%",
-                                                    zIndex: 1,
-                                                    transition: "opacity 0.3s",
-                                                }}
-                                                onClick={() =>
-                                                    handleDelete(item._id)
-                                                }
-                                            >
-                                                H
-                                            </button>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                            {adLoading ? (
+                                <Loader />
+                            ) : (
+                                <>
+                                    {updatedItems?.map(
+                                        (item: any, index: number) => {
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    style={{
+                                                        position: "relative",
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                        width: "25%",
+                                                        gap: "8px",
+                                                        alignItems: "center",
+                                                        justifyContent:
+                                                            "center",
+                                                        borderRadius: "8px",
+                                                        padding: "16px 8px",
+                                                        backgroundColor: "#fff",
+                                                        aspectRatio: "16/9",
+                                                        cursor: "pointer",
+                                                    }}
+                                                >
+                                                    <div
+                                                        style={{
+                                                            width: "100%",
+                                                            position:
+                                                                "relative",
+                                                        }}
+                                                    >
+                                                        <Image
+                                                            src={item.photo[0]}
+                                                            alt="advertisement"
+                                                            layout="responsive"
+                                                            width={200}
+                                                            height={110}
+                                                            style={{
+                                                                objectFit:
+                                                                    "cover",
+
+                                                                aspectRatio:
+                                                                    "16/9",
+                                                                borderRadius:
+                                                                    "8px",
+                                                            }}
+                                                        />
+                                                        <button
+                                                            style={{
+                                                                position:
+                                                                    "absolute",
+                                                                top: "8px",
+                                                                right: "8px",
+                                                                background:
+                                                                    "transparent",
+                                                                border: "none",
+                                                                color: "red",
+                                                                cursor: "pointer",
+                                                                padding: "4px",
+                                                                borderRadius:
+                                                                    "50%",
+                                                                width: "40px",
+                                                                height: "40px",
+                                                                display: "flex",
+                                                                justifyContent:
+                                                                    "center",
+                                                                alignItems:
+                                                                    "center",
+                                                                backgroundColor:
+                                                                    "white",
+                                                                zIndex: 1,
+                                                                transition:
+                                                                    "opacity 0.3s",
+                                                            }}
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    item._id
+                                                                )
+                                                            }
+                                                        >
+                                                            <Image
+                                                                src={Delete}
+                                                                alt="Delete"
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+                                    )}
+                                </>
+                            )}
                         </div>
                     </div>
                 </>
