@@ -70,27 +70,30 @@ const RenderCell: React.FC<RenderCellProps> = ({
                                 <EditIcon size={20} fill="black" />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip content="Activate">
-                            <IconButton
-                                css={{ color: "Green" }}
-                                onClick={() =>
-                                    handleStatusChange(user._id, true)
-                                }
-                            >
-                                Activate
-                            </IconButton>
-                        </Tooltip>
 
-                        <Tooltip content="Deactivate">
-                            <IconButton
-                                css={{ color: "Red" }}
-                                onClick={() =>
-                                    handleStatusChange(user._id, false)
-                                }
-                            >
-                                Deactivate
-                            </IconButton>
-                        </Tooltip>
+                        {user.is_active ? (
+                            <Tooltip content="Deactivate">
+                                <IconButton
+                                    css={{ color: "Red" }}
+                                    onClick={() =>
+                                        handleStatusChange(user._id, false)
+                                    }
+                                >
+                                    Deactivate
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip content="Activate">
+                                <IconButton
+                                    css={{ color: "Green" }}
+                                    onClick={() =>
+                                        handleStatusChange(user._id, true)
+                                    }
+                                >
+                                    Activate
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     </Row>
                 </>
             );

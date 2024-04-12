@@ -10,6 +10,7 @@ interface ICategoryModalProps {
     onClose: () => void;
     type: string;
     id?: string;
+    setCompletion?: () => void;
 }
 
 interface ICategoryProps {
@@ -22,6 +23,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
     onClose,
     type,
     id,
+    setCompletion,
 }) => {
     const [details, setDetails] = useState<ICategoryProps>({
         category: "",
@@ -77,7 +79,9 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
             );
             console.log(response.data.result);
             onClose();
-
+            if (setCompletion) {
+                setCompletion();
+            }
             return response.data.result;
         } catch (error) {
             throw error;
@@ -115,6 +119,9 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                 }
             );
             onClose();
+            if (setCompletion) {
+                setCompletion();
+            }
             return response.data.result;
         } catch (error) {
             throw error;

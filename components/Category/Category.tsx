@@ -30,6 +30,7 @@ const Category = () => {
     const [editId, setEditId] = useState<string>("");
     const [showModal, setShowModal] = useState<boolean>(false);
     const { search, setSearch } = context;
+    const [completion, setCompletion] = useState<boolean>(false);
 
     const API_BASE_URL =
         "https://stingray-app-zclxo.ondigitalocean.app/api/v1/category/";
@@ -84,18 +85,34 @@ const Category = () => {
     };
 
     const handleDelete = async ({ _id }: any) => {
-        try {
-            const response = await deleteCategory(_id);
-            fetchData();
-        } catch (error) {
-            console.error("Error deleting category:", error);
+        const confirmation = window.confirm(
+            "Are you sure you want to delete this category?"
+        );
+        if (confirmation) {
+            console.log("Delete category");
+            try {
+                const response = await deleteCategory(_id);
+                alert("Category has been deleted");
+
+                // add confirmation here for the delete
+
+                fetchData();
+            } catch (error) {
+                console.error("Error deleting category:", error);
+            }
         }
     };
 
     useEffect(() => {
+        if (completion) {
+            fetchData();
+        }
+        console.log(completion);
+    }, [completion]);
+
+    useEffect(() => {
         fetchData();
     }, []);
-
     //FOR SEARCH FUNCTIONALITY//
     // useEffect(() => {
     //     searchData();
@@ -135,7 +152,10 @@ const Category = () => {
 
             <Text h3>All Categories</Text>
 
-            <CreateCategory fetchData={fetchData} />
+            <CreateCategory
+                fetchData={fetchData}
+                setCompletion={setCompletion}
+            />
 
             <>
                 {loading ? (
@@ -210,6 +230,7 @@ const Category = () => {
                 onClose={() => setShowModal(false)}
                 type="edit"
                 id={editId}
+                setCompletion={() => setCompletion(true)}
             />
         </Flex>
     );
