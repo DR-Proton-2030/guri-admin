@@ -51,7 +51,9 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setImages(e.target.files);
-            user.photo = null;
+            if (user) {
+                user.photo = null;
+            }
         }
     };
 
@@ -106,12 +108,11 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
 
             formData.append("category", details.category);
             formData.append("is_active", String(details.is_active));
-            if (images) {
+            if (images && !user) {
                 for (let i = 0; i < images.length; i++) {
                     formData.append("images", images[i]);
                 }
             }
-            console.log(formData.get("images"));
 
             const response = await axios.patch(
                 API_BASE_URL + "editCategory/" + `${id}`,
@@ -241,7 +242,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                                                 >
                                                     <Image
                                                         src={
-                                                            user.photo
+                                                            user && user.photo
                                                                 ? String(
                                                                       images[0]
                                                                   )

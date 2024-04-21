@@ -108,7 +108,7 @@ const AddAdvertisement = ({ fetchData }: any) => {
                 }
             );
             console.log(response.data.result);
-            prompt("Advertisement uploaded successfully");
+            alert("Advertisement uploaded successfully");
             return response.data.result;
         } catch (error: any) {
             if (axios.isCancel(error)) {
