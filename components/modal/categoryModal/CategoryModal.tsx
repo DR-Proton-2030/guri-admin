@@ -108,7 +108,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
 
             formData.append("category", details.category);
             formData.append("is_active", String(details.is_active));
-            if (images && !user) {
+            if ((images && !user) || (images && user.photo === null)) {
                 for (let i = 0; i < images.length; i++) {
                     formData.append("images", images[i]);
                 }
