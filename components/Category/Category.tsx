@@ -28,6 +28,7 @@ const Category = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const context = useSearchContext();
     const [editId, setEditId] = useState<string>("");
+    const [editUser, setEditUser] = useState<any>({});
     const [showModal, setShowModal] = useState<boolean>(false);
     const { search, setSearch } = context;
     const [completion, setCompletion] = useState<boolean>(false);
@@ -68,6 +69,7 @@ const Category = () => {
             const response = await getCategory();
             setData(response);
             setLoading(false);
+            setCompletion(false);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -209,6 +211,7 @@ const Category = () => {
                                                                 _id: item._id,
                                                             })
                                                         }
+                                                        setUser={setEditUser}
                                                         setId={setEditId}
                                                         showModal={showModal}
                                                         setShowModal={
@@ -229,6 +232,7 @@ const Category = () => {
                 show={showModal}
                 onClose={() => setShowModal(false)}
                 type="edit"
+                user={editUser}
                 id={editId}
                 setCompletion={() => setCompletion(true)}
             />

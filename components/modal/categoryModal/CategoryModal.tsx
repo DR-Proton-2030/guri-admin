@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import Upload from "../../icons/cloud_upload_black_24dp.svg";
 import Image from "next/image";
@@ -11,6 +11,7 @@ interface ICategoryModalProps {
     type: string;
     id?: string;
     setCompletion?: () => void;
+    user?: any;
 }
 
 interface ICategoryProps {
@@ -24,6 +25,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
     type,
     id,
     setCompletion,
+    user,
 }) => {
     const [details, setDetails] = useState<ICategoryProps>({
         category: "",
@@ -108,6 +110,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                     formData.append("images", images[i]);
                 }
             }
+            console.log(formData.get("images"));
 
             const response = await axios.patch(
                 API_BASE_URL + "editCategory/" + `${id}`,
@@ -119,6 +122,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                 }
             );
             onClose();
+            alert("Category Edited Successfully");
             if (setCompletion) {
                 setCompletion();
             }
@@ -138,6 +142,17 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
     const handleClose = () => {
         onClose();
     };
+
+    useEffect(() => {
+        if (user) {
+            setDetails({
+                category: user.category || "",
+                is_active: user.is_active !== undefined ? user.is_active : true,
+            });
+
+            setImages(user.photo || null);
+        }
+    }, [user]);
     return (
         <>
             {show && (
@@ -224,10 +239,16 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                                                     }}
                                                 >
                                                     <Image
-                                                        src={URL.createObjectURL(
-                                                            images[0]
-                                                        )}
-                                                        alt="Selected categoryment"
+                                                        src={
+                                                            user
+                                                                ? String(
+                                                                      images[0]
+                                                                  )
+                                                                : URL.createObjectURL(
+                                                                      images[0]
+                                                                  )
+                                                        }
+                                                        alt="Selected category"
                                                         layout="fill"
                                                         style={{
                                                             objectFit: "cover",
@@ -248,7 +269,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                                                 name="images"
                                                 id="category"
                                                 accept="image/*"
-                                                multiple
+                                                // multiple
                                                 onChange={handleImageChange}
                                                 style={{
                                                     position: "absolute",

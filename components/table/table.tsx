@@ -36,7 +36,7 @@ export const TableWrapper = () => {
         { name: "ACTIONS", uid: "actions" },
     ];
 
-    const getBusiness = useCallback( async () => {
+    const getBusiness = useCallback(async () => {
         try {
             setLoading(true); // Show loader
             const result = await getFilteredBusinesses(status, page);
@@ -46,9 +46,9 @@ export const TableWrapper = () => {
         } finally {
             setLoading(false); // Hide loader regardless of success or error
         }
-    },[page, status]);
+    }, [page, status]);
 
-    const searchData = useCallback( async () => {
+    const searchData = useCallback(async () => {
         try {
             if (search?.text) {
                 setLoading(true);
@@ -66,7 +66,7 @@ export const TableWrapper = () => {
         } finally {
             setLoading(false);
         }
-    },[page, search?.text, status]);
+    }, [page, search?.text, status]);
 
     const handleStatusChange = async (id: string, newStatus: string) => {
         try {
@@ -148,6 +148,7 @@ export const TableWrapper = () => {
                             type="radio"
                             name="radio"
                             onClick={() => setStatus("PENDING")}
+                            checked={status === "PENDING"}
                         />
                         <span className="name">Pending</span>
                     </label>
@@ -156,6 +157,7 @@ export const TableWrapper = () => {
                             type="radio"
                             name="radio"
                             onClick={() => setStatus("ACTIVE")}
+                            checked={status === "ACTIVE"}
                         />
                         <span className="name">Active</span>
                     </label>

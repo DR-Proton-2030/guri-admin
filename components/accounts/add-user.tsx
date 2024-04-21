@@ -44,7 +44,6 @@ const EditBusinessDetails = ({ business_Details }: any) => {
             if (response) {
                 console.log("Details updated successfully");
                 closeHandler();
-                window.location.reload();
             }
         } catch (error) {
             console.error("Error updating business details:", error);
