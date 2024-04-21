@@ -51,6 +51,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setImages(e.target.files);
+            user.photo = null;
         }
     };
 
@@ -240,7 +241,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                                                 >
                                                     <Image
                                                         src={
-                                                            user
+                                                            user.photo
                                                                 ? String(
                                                                       images[0]
                                                                   )

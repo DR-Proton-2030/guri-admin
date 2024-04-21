@@ -42,6 +42,7 @@ const EditBusinessDetails = ({ business_Details }: any) => {
                 editedFields
             );
             if (response) {
+                
                 console.log("Details updated successfully");
                 closeHandler();
             }
