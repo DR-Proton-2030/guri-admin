@@ -40,28 +40,8 @@ const Category = () => {
     { name: "NAME", uid: "name" },
     { name: "STATUS", uid: "status" },
     { name: "ACTIONS", uid: "actions" },
-    { name: "DELETE", uid: "delete" },
+    // { name: "DELETE", uid: "delete" }, // Commenting out the delete column
   ];
-
-  //  FUNCTION FOR THE SEARCHING OF CATEGORIES//
-  // const searchData = async () => {
-  //     try {
-  //         if (search.text) {
-  //             setLoading(true);
-  //             const response = await searchCategories("name", search.text);
-  //             setData(response);
-  //         } else {
-  //             setLoading(true);
-  //             const result = await getCategory();
-  //             setData(result);
-  //         }
-  //     } catch (error) {
-  //         console.log(error);
-  //         throw error;
-  //     } finally {
-  //         setLoading(false);
-  //     }
-  // };
 
   const fetchData = async () => {
     try {
@@ -86,24 +66,24 @@ const Category = () => {
     }
   };
 
-  const handleDelete = async ({ _id }: any) => {
-    const confirmation = window.confirm(
-      "Are you sure you want to delete this category?"
-    );
-    if (confirmation) {
-      console.log("Delete category");
-      try {
-        const response = await deleteCategory(_id);
-        alert("Category has been deleted");
+  // const handleDelete = async ({ _id }: any) => {
+  //   const confirmation = window.confirm(
+  //     "Are you sure you want to delete this category?"
+  //   );
+  //   if (confirmation) {
+  //     console.log("Delete category");
+  //     try {
+  //       const response = await deleteCategory(_id);
+  //       alert("Category has been deleted");
 
-        // add confirmation here for the delete
+  //       // add confirmation here for the delete
 
-        fetchData();
-      } catch (error) {
-        console.error("Error deleting category:", error);
-      }
-    }
-  };
+  //       fetchData();
+  //     } catch (error) {
+  //       console.error("Error deleting category:", error);
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     if (completion) {
@@ -115,10 +95,6 @@ const Category = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  //FOR SEARCH FUNCTIONALITY//
-  // useEffect(() => {
-  //     searchData();
-  // }, [search.text]);
 
   return (
     <Flex
@@ -197,11 +173,6 @@ const Category = () => {
                             user={item}
                             columnKey={columnKey}
                             handleStatusChange={handleStatusChange}
-                            handleDelete={() =>
-                              handleDelete({
-                                _id: item._id,
-                              })
-                            }
                             setUser={setEditUser}
                             setId={setEditId}
                             showModal={showModal}
