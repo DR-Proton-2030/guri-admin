@@ -177,6 +177,7 @@ const Category = () => {
                             setId={setEditId}
                             showModal={showModal}
                             setShowModal={setShowModal}
+                            handleDelete={() => {}}
                           />
                         </Table.Cell>
                       );
