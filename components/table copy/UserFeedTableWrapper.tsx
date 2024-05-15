@@ -11,121 +11,39 @@ import {
 import { Loader } from "./loader/Loader";
 import { useSearchContext } from "../navbar/SearchContext";
 
-interface Business {
-  _id: string;
-  name: string;
-  location: string;
-  createdAt: string;
-  status: string;
-  actions: string[];
-}
+import axios from "axios";
 
 export const UserFeedTableWrapper = () => {
-  const [businesses, setBusinesses] = useState<Business[]>([]);
+  const [businesses, setBusinesses] = useState<any>([]);
   const [status, setStatus] = useState<string>("PENDING");
   const [totalpage, setTotalPage] = useState<number>(1);
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
-  const { search } = useSearchContext();
 
   const columns = [
-    { name: "NAME", uid: "name" },
-    { name: "Title", uid: "title" },
-    { name: "View image", uid: "view" },
-    { name: "STATUS", uid: "status" },
+    { name: "View image", uid: "message_body" },
+    { name: "STATUS", uid: "is_approved" },
+    { name: "Update", uid: "role" },
     { name: "ACTIONS", uid: "actions" },
   ];
 
-  const getBusiness = useCallback(async () => {
+  const getBusiness = async () => {
+    setLoading(true);
     try {
-      setLoading(true); // Show loader
-      const result = await getFilteredBusinesses(status, page);
-      setBusinesses(result);
+      const response = await axios.get(
+        `https://stingray-app-zclxo.ondigitalocean.app/api/v1/thread/getThread?page=${page}`
+      );
+      console.log(response.data.result); // Logging the response data
+      setLoading(false);
+      setBusinesses(response.data.result);
     } catch (error) {
       console.error("Error fetching business data:", error);
-    } finally {
-      setLoading(false); // Hide loader regardless of success or error
     }
-  }, [page, status]);
-
-  const searchData = useCallback(async () => {
-    try {
-      if (search?.text) {
-        setLoading(true);
-        const response = await searchBusinesses("name", search.text);
-        // status === "PENDING" ?
-        setBusinesses(response);
-      } else {
-        setLoading(true);
-        const result = await getFilteredBusinesses(status, page);
-        setBusinesses(result);
-      }
-    } catch (error) {
-      console.log(error);
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }, [page, search?.text, status]);
-
-  const handleStatusChange = async (id: string, newStatus: string) => {
-    try {
-      setLoading(true); // Show loader
-      const updatedBusiness = await editBusiness(id, newStatus);
-      getBusiness();
-      setBusinesses((prevBusinesses) =>
-        prevBusinesses.map((business) =>
-          business._id === id
-            ? { ...business, status: updatedBusiness.status }
-            : business
-        )
-      );
-    } catch (error) {
-      // Error handling
-    } finally {
-      setLoading(false); // Hide loader regardless of success or error
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this business?"
-    );
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      setLoading(true); // Show loader
-      await deleteBusiness(id);
-      getBusiness();
-      setBusinesses((prevBusinesses) =>
-        prevBusinesses.filter((business) => business._id !== id)
-      );
-    } catch (error) {
-      // Error handling
-    } finally {
-      setLoading(false); // Hide loader regardless of success or error
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (page > 1) {
-      setPage((prevPage) => prevPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    setPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
     getBusiness();
-  }, [getBusiness]);
-
-  useEffect(() => {
-    searchData();
-  }, [searchData]);
+  }, [page]);
 
   return (
     <Box
@@ -142,13 +60,12 @@ export const UserFeedTableWrapper = () => {
           gap: 30,
         }}
       >
-        <div className="radio-inputs">
+        {/* <div className="radio-inputs">
           <label className="radio">
             <input
               type="radio"
               name="radio"
               onClick={() => setStatus("PENDING")}
-              checked={status === "PENDING"}
             />
             <span className="name">Pending</span>
           </label>
@@ -161,9 +78,9 @@ export const UserFeedTableWrapper = () => {
             />
             <span className="name">Active</span>
           </label>
-        </div>
+        </div> */}
         <div className="" style={{ display: "flex", gap: "10px" }}>
-          <button className="Btn" onClick={handlePrevPage}>
+          <button className="Btn" onClick={() => setPage(page - 1)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -181,7 +98,7 @@ export const UserFeedTableWrapper = () => {
             {page}
           </button>
 
-          <button className="Btn" onClick={handleNextPage}>
+          <button className="Btn" onClick={() => setPage(page + 1)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -231,8 +148,8 @@ export const UserFeedTableWrapper = () => {
                       <RenderCell
                         user={item}
                         columnKey={columnKey}
-                        handleStatusChange={handleStatusChange}
-                        handleDelete={handleDelete}
+                        handleStatusChange={() => {}}
+                        handleDelete={() => {}}
                       />
                     </Table.Cell>
                   )}

@@ -7,27 +7,9 @@ import { HouseIcon } from "../icons/breadcrumb/house-icon";
 import { UsersIcon } from "../icons/breadcrumb/users-icon";
 import { Flex } from "../styles/flex";
 import { TableWrapper } from "../table/table";
-import { UserFeedTableWrapper } from "../table copy/table";
+import { UserFeedTableWrapper } from "../table copy/UserFeedTableWrapper";
 
 export const AllPosts = () => {
-  const [businesses, setBusinesses] = useState([]);
-
-  const getBusiness = async () => {
-    try {
-      const response = await axios.get(
-        "https://stingray-app-zclxo.ondigitalocean.app/api/v1/business/getBusiness"
-      );
-      console.log(response.data.result.businesses); // Logging the response data
-      setBusinesses(response.data.result.businesses);
-    } catch (error) {
-      console.error("Error fetching business data:", error);
-    }
-  };
-
-  useEffect(() => {
-    getBusiness();
-  }, []);
-
   return (
     <Flex
       css={{

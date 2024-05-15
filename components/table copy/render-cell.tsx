@@ -21,31 +21,46 @@ const RenderCell: React.FC<RenderCellProps> = ({
   const cellValue = user[columnKey];
 
   switch (columnKey) {
-    case "name":
+    case "message_body":
       return (
-        <User squared src={user.photo[0]} name={cellValue} css={{ p: 0 }}>
-          {user.email}
+        <User
+          squared
+          src={user?.message_media_url}
+          name={cellValue}
+          css={{ p: 0 }}
+        >
+          {user.user_details?.email}
         </User>
       );
     case "role":
       return (
-        <Col>
-          <Row>
-            <Text b size={14} css={{ tt: "capitalize" }}>
-              {cellValue}
-            </Text>
-          </Row>
-          <Row>
-            <Text b size={13} css={{ tt: "capitalize", color: "$accents7" }}>
-              {user.team}
-            </Text>
-          </Row>
+        <Col css={{ d: "flex", ml: 10 }}>
+          {!user?.is_approved ? (
+            <>
+              <Col css={{ d: "flex" }}>
+                <Tooltip content="Activate">
+                  <IconButton css={{ color: "Green" }} onClick={() => {}}>
+                    Active
+                  </IconButton>
+                </Tooltip>
+              </Col>
+              <Col css={{ d: "flex" }}>
+                <Tooltip content="Reject">
+                  <IconButton css={{ color: "Red" }} onClick={() => {}}>
+                    Reject
+                  </IconButton>
+                </Tooltip>
+              </Col>
+            </>
+          ) : null}
         </Col>
       );
-    case "status":
+    case "is_approved":
       return (
         // @ts-ignore
-        <StyledBadge type={String(user.status)}>{cellValue}</StyledBadge>
+        <StyledBadge type={String(user.is_approved)}>
+          {user?.is_approved ? "Active" : "Pending"}
+        </StyledBadge>
       );
     case "createdAt":
       // Format createdAt field to display date, month, and year
@@ -62,32 +77,8 @@ const RenderCell: React.FC<RenderCellProps> = ({
           align="center"
           css={{ gap: "$8", "@md": { gap: 0 }, ml: "$2xl" }}
         >
-          {user?.status === "PENDING" ? (
-            <>
-              <Col css={{ d: "flex" }}>
-                <Tooltip content="Activate">
-                  <IconButton
-                    css={{ color: "Green" }}
-                    onClick={() => handleStatusChange(user._id, "ACTIVE")}
-                  >
-                    Active
-                  </IconButton>
-                </Tooltip>
-              </Col>
-              <Col css={{ d: "flex" }}>
-                <Tooltip content="Reject">
-                  <IconButton
-                    css={{ color: "Red" }}
-                    onClick={() => handleStatusChange(user._id, "REJECTED")}
-                  >
-                    Reject
-                  </IconButton>
-                </Tooltip>
-              </Col>
-            </>
-          ) : null}
           <Col css={{ d: "flex", gap: "$12" }}>
-            <EditBusinessDetails business_Details={user} />
+            {/* <EditBusinessDetails business_Details={user} /> */}
             <Tooltip
               content="Delete"
               color="error"
