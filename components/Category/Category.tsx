@@ -62,28 +62,10 @@ const Category = () => {
       alert("Status has been changed");
       fetchData();
     } catch (error) {
-      console.error("Error editing category:", error);
+      console.error("Error editing category-", error);
     }
   };
 
-  // const handleDelete = async ({ _id }: any) => {
-  //   const confirmation = window.confirm(
-  //     "Are you sure you want to delete this category?"
-  //   );
-  //   if (confirmation) {
-  //     console.log("Delete category");
-  //     try {
-  //       const response = await deleteCategory(_id);
-  //       alert("Category has been deleted");
-
-  //       // add confirmation here for the delete
-
-  //       fetchData();
-  //     } catch (error) {
-  //       console.error("Error deleting category:", error);
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     if (completion) {

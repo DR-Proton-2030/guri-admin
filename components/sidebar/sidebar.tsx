@@ -56,6 +56,12 @@ export const SidebarWrapper = () => {
                             isActive={router.pathname === "/AdvertisementPage"}
                             href="/Advertisement"
                         />
+                        <SidebarItem
+                            title="All Posts"
+                            icon={<HomeIcon />}
+                            isActive={router.pathname === "/UserPosts"}
+                            href="/UserPosts"
+                        />
                     </Sidebar.Body>
                     <Sidebar.Footer>
                         <Tooltip content={"Settings"} rounded color="primary">
