@@ -4,7 +4,9 @@ import { Box } from "../styles/box";
 import RenderCell from "./render-cell";
 import {
   deleteBusiness,
+  deleteThread,
   editBusiness,
+  editThread,
   getFilteredBusinesses,
   searchBusinesses,
 } from "../../pages/api/business";
@@ -38,6 +40,47 @@ export const UserFeedTableWrapper = () => {
       setBusinesses(response.data.result);
     } catch (error) {
       console.error("Error fetching business data:", error);
+    }
+  };
+
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      setLoading(true);
+      const updatedBusiness = await editThread(id, newStatus);
+      getBusiness();
+      setBusinesses((prevBusinesses: any) =>
+        prevBusinesses.map((business: any) =>
+          business._id === id
+            ? { ...business, status: updatedBusiness.status }
+            : business
+        )
+      );
+    } catch (error) {
+      // Error handling
+    } finally {
+      setLoading(false); // Hide loader regardless of success or error
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this business?"
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await deleteThread(id);
+      getBusiness();
+      setBusinesses((prevBusinesses: any) =>
+        prevBusinesses.filter((business: any) => business._id !== id)
+      );
+    } catch (error) {
+      // Error handling
+    } finally {
+      setLoading(false); // Hide loader regardless of success or error
     }
   };
 
@@ -148,8 +191,8 @@ export const UserFeedTableWrapper = () => {
                       <RenderCell
                         user={item}
                         columnKey={columnKey}
-                        handleStatusChange={() => {}}
-                        handleDelete={() => {}}
+                        handleStatusChange={handleStatusChange}
+                        handleDelete={handleDelete}
                       />
                     </Table.Cell>
                   )}

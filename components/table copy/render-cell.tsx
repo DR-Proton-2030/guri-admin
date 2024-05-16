@@ -35,18 +35,24 @@ const RenderCell: React.FC<RenderCellProps> = ({
     case "role":
       return (
         <Col css={{ d: "flex", ml: 10 }}>
-          {!user?.is_approved ? (
+          {user?.status === "PENDING" ? (
             <>
               <Col css={{ d: "flex" }}>
                 <Tooltip content="Activate">
-                  <IconButton css={{ color: "Green" }} onClick={() => {}}>
+                  <IconButton
+                    css={{ color: "Green" }}
+                    onClick={() => handleStatusChange(user._id, "ACTIVE")}
+                  >
                     Active
                   </IconButton>
                 </Tooltip>
               </Col>
               <Col css={{ d: "flex" }}>
                 <Tooltip content="Reject">
-                  <IconButton css={{ color: "Red" }} onClick={() => {}}>
+                  <IconButton
+                    css={{ color: "Red" }}
+                    onClick={() => handleStatusChange(user._id, "REJECTED")}
+                  >
                     Reject
                   </IconButton>
                 </Tooltip>
@@ -59,7 +65,7 @@ const RenderCell: React.FC<RenderCellProps> = ({
       return (
         // @ts-ignore
         <StyledBadge type={String(user.is_approved)}>
-          {user?.is_approved ? "Active" : "Pending"}
+          {user?.status === "ACTIVE" ? "Active" : "Pending"}
         </StyledBadge>
       );
     case "createdAt":
