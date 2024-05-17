@@ -95,9 +95,7 @@ export const deleteBusiness = async (id: string) => {
 };
 export const deleteThread = async (id: string) => {
   try {
-    await axios.delete(API_THREAD_URL + "delete-thread", {
-      data: { postId: id },
-    });
+    await axios.delete(API_THREAD_URL + `delete-thread/${id}`);
   } catch (error) {
     console.error("Error deleting business:", error);
     throw error;
