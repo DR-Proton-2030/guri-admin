@@ -64,7 +64,7 @@ const RenderCell: React.FC<RenderCellProps> = ({
     case "is_approved":
       return (
         // @ts-ignore
-        <StyledBadge type={String(user.is_approved)}>
+        <StyledBadge>
           {user?.status === "ACTIVE" ? "Active" : "Pending"}
         </StyledBadge>
       );
