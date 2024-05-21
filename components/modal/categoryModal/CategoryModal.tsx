@@ -16,6 +16,7 @@ interface ICategoryModalProps {
 
 interface ICategoryProps {
     category: string;
+    sequence: number;
     is_active: boolean;
 }
 
@@ -30,6 +31,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
     const [details, setDetails] = useState<ICategoryProps>({
         category: "",
         is_active: true,
+        sequence: 0,
     });
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -67,6 +69,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
 
             formData.append("category", details.category);
             formData.append("is_active", String(details.is_active));
+            formData.append("sequence", String(details.sequence));
             if (images) {
                 for (let i = 0; i < images.length; i++) {
                     formData.append("images", images[i]);
@@ -95,6 +98,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
             setDetails({
                 category: "",
                 is_active: true,
+                sequence: 0,
             });
             setImages(null);
         }
@@ -108,6 +112,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
 
             formData.append("category", details.category);
             formData.append("is_active", String(details.is_active));
+            formData.append("sequence", String(details.sequence));
             if ((images && !user) || (images && user.photo === null)) {
                 for (let i = 0; i < images.length; i++) {
                     formData.append("images", images[i]);
@@ -136,6 +141,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
             setDetails({
                 category: "",
                 is_active: true,
+                sequence: 0,
             });
             setImages(null);
         }
@@ -150,6 +156,7 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
             setDetails({
                 category: user.category || "",
                 is_active: user.is_active !== undefined ? user.is_active : true,
+                sequence: user.sequence || 0,
             });
 
             setImages(user.photo || null);
@@ -191,6 +198,18 @@ const CategoryModal: React.FC<ICategoryModalProps> = ({
                                             name="category"
                                             className={styles.formControl}
                                             value={details.category}
+                                            onChange={handleChangeDetails}
+                                            required
+                                        />
+                                    </div>
+                                    <div className={styles.formGroup}>
+                                        <label htmlFor="title">Sequence</label>
+                                        <input
+                                            type="number"
+                                            id="sequence"
+                                            name="sequence"
+                                            className={styles.formControl}
+                                            value={details.sequence}
                                             onChange={handleChangeDetails}
                                             required
                                         />
